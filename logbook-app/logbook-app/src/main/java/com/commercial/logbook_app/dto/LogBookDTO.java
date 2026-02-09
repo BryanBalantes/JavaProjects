@@ -6,6 +6,10 @@ public class LogBookDTO {
     private int id;
     private String task;
 
+    public LogBookDTO(){
+
+    }
+
     public LogBookDTO(int id, String task) {
         this.id = id;
         this.task = task;
