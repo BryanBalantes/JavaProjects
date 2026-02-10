@@ -16,32 +16,33 @@
             </a>
             <ul class="nav nav-pills">
                 <li class="nav-item"><a th:href="@{/}" class="nav-link" aria-current="page">Home</a></li>
-                <li class="nav-item"><a th:href="@{/records/}" class="nav-link active">View Records</a></li>
-                <li class="nav-item"><a th:href="@{/records/add}" class="nav-link">Add Records</a></li>
+                <li class="nav-item"><a th:href="@{/records/}" class="nav-link">View Records</a></li>
+                <li class="nav-item"><a th:href="@{/records/add}" class="nav-link active">Add Records</a></li>
             </ul>
         </header>
     </div>
     <div class="container">
-        <h1>Things to do</h1>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Task</th>
-                <th scope="col">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr th:each="record:${records}">
-                    <td th:text="${record.id}"></td>
-                    <td th:text="${record.task}"></td>
-                    <td>
-                        <a th:href="@{/records/{id}(id=${record.id})}" class="btn btn-btn-outline-success">View</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <h1>What do you need to do?</h1>
+        <form th:action="@{/records}" th:Object="${record}" th:method="put">
+            <input type="hidden" name="id" th:field="*{id}">
+            <div class="mb-3">
+                <label for="taskInput" class="form-label">Describe your task...</label>
+                <textarea class="form-control" id="taskInput" rows="3" th:field="*{task}"></textarea>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-outline-primary">Update Task...</button>
+            </div>
+        </form>
     </div>
+
+    <div class="container">
+        <form th:action="@{/records/{id}(id=${record.id})}" th:Object="${record}" th:method="delete">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-danger">Delete Task...</button>
+            </div>
+        </form>
+    </div>
+
     <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
             <div class="col-md-4 d-flex align-items-center">

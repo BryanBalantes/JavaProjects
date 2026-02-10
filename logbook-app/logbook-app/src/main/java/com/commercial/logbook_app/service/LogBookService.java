@@ -23,4 +23,13 @@ public class LogBookService {
     public void create(LogBookDTO logBookDTO){
         recordList.put(logBookDTO.getId(), logBookDTO);
     }
+
+    public void update(LogBookDTO logBookDTO) {
+        recordList.put(logBookDTO.getId(), logBookDTO);
+    }
+
+    public void delete(int id) {
+        recordList.remove(id);
+    }
+
 }

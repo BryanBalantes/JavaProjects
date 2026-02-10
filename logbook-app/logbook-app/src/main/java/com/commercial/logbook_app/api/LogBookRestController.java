@@ -32,4 +32,14 @@ public class LogBookRestController {
     public void create(@RequestBody LogBookDTO logBookDTO){
         logBookService.create(logBookDTO);
     }
+
+//    @PutMapping
+//    public void update(@RequestBody LogBookDTO logBookDTO){
+//        logBookService.update(logBookDTO);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void delete(@PathVariable int id){
+//        logBookService.delete(id);
+//    }
 }
