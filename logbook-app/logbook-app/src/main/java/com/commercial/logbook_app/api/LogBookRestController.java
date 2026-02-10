@@ -11,16 +11,12 @@ import java.util.List;
 @RequestMapping("/api/records")
 public class LogBookRestController {
 
-<<<<<<< HEAD
+
     private final LogBookService logBookService;
 
     public LogBookRestController(LogBookService logBookService){
         this.logBookService = logBookService;
     }
-=======
-    @Autowired
-    private LogBookService logBookService;
->>>>>>> b3aec1878e0f9e2007d3c4f480efa2d388d5d6c1
 
     @GetMapping
     public List<LogBookDTO> getAll() {
