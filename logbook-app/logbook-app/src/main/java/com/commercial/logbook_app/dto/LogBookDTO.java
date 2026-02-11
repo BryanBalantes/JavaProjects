@@ -1,4 +1,7 @@
 package com.commercial.logbook_app.dto;
+
+import com.commercial.logbook_app.model.LogBook;
+
 /*
 * This class holds information about the user's RECORD
 * */
@@ -9,6 +12,11 @@ public class LogBookDTO {
 
     public LogBookDTO(){
 
+    }
+
+    public LogBookDTO(LogBook model) {
+        this.id = model.getId();
+        this.task = model.getTask();
     }
 
     public LogBookDTO(int id, String task) {
