@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogBook Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --bg-card: rgba(26, 26, 46, 0.4);
+            --bg-card-hover: rgba(26, 26, 46, 0.6);
+            --text-primary: #f8f8f8;
+            --text-secondary: #a0a0b0;
+            --text-tertiary: #6b7280;
+            --border-color: rgba(51, 65, 85, 0.5);
+            --border-color-light: rgba(71, 85, 105, 0.3);
+            --accent-purple: #a78bfa;
+            --accent-blue: #60a5fa;
+            --accent-amber: #fbbf24;
+            --accent-jade: #10BD3E;
+            --accent-red: #ef4444;
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html, body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        a {
+          text-decoration: none;
+        }
+
+
+/* Navigation Bar (Desktop) */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(26, 26, 46, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.navbar-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 16px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-logo {
+    height: 40px;
+    width: auto;
+    max-width: 120px;
+    object-fit: contain;
+}
+
+.brand-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 8px;
+    margin-left: 48px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.nav-link:hover {
+    background-color: rgba(71, 85, 105, 0.5);
+    color: var(--text-primary);
+}
+
+.nav-link.active {
+    background-color: rgba(167, 139, 250, 0.2);
+    color: var(--accent-purple);
+    border-color: rgba(167, 139, 250, 0.3);
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.logout-btn:hover {
+    background-color: rgba(71, 85, 105, 0.5);
+    color: var(--text-primary);
+}
+/* Mobile Bottom Navigation */
+    .bottom-nav {
+        display: none;
+    }
+
+        /* Main Container */
+        main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Form Section */
+        .form-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background-color: rgba(96, 165, 250, 0.05);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        input[type="file"] {
+            padding: 0.75rem;
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: var(--accent-blue);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 0.75rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: var(--accent-purple);
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button[type="submit"],
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: var(--bg-primary);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(96, 165, 250, 0.3);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-purple);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+                padding: 0 1.5rem;
+            }
+
+            .form-section {
+                padding: 2rem;
+                max-width: 600px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+                max-width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Utility Classes */
+        .error-message {
+            color: var(--accent-red);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .success-message {
+            color: var(--accent-emerald);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+
+        /* ================================
+   RESPONSIVE DESIGN - TABLET & DESKTOP
+   ================================ */
+
+/* Tablet Landscape (768px+) */
+@media (min-width: 769px) {
+    .navbar {
+        display: block;
+    }
+
+    .bottom-nav {
+        display: none;
+    }
+
+    .container {
+        padding: 0 24px;
+    }
+
+    .navbar-container {
+        padding: 0 24px;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .main-content {
+        padding-bottom: 32px;
+    }
+}
+
+/* ================================
+   RESPONSIVE DESIGN - MOBILE
+   ================================ */
+
+@media (max-width: 768px) {
+    /* Hide Desktop Navigation */
+    .navbar {
+        display: none;
+    }
+
+    /* Layout adjustments */
+    .main-content {
+        padding: 24px 0 100px 0;
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    /* Header adjustments */
+    .header {
+        margin-bottom: 24px;
+    }
+
+    .header-title {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .header-subtitle {
+        font-size: 14px;
+    }
+
+    /* Metrics Grid - Single Column on Mobile */
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .metric-card {
+        padding: 16px;
+    }
+
+    .metric-value {
+        font-size: 24px;
+    }
+
+    .metric-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .metric-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Tables adjustments */
+    .tables-section {
+        gap: 24px;
+    }
+
+    .table-card {
+        border-radius: 8px;
+    }
+
+    .table-header {
+        padding: 12px;
+    }
+
+    .table-title {
+        font-size: 16px;
+        flex: 1;
+    }
+
+    .view-all-btn {
+        font-size: 12px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+
+    .data-table {
+        min-width: 400px;
+    }
+
+    /* Mobile Bottom Navigation */
+    body {
+        padding-bottom: 0;
+    }
+
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 70px;
+        background: #1a1a2e;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+        z-index: 999;
+    }
+
+    /* Each slot equal */
+    .bottom-nav-item,
+    .nav-spacer {
+        flex: 1;
+        text-align: center;
+    }
+
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #888;
+        transition: var(--transition);
+        min-height: 50px;
+    }
+
+    .bottom-nav-item svg {
+        width: 22px;
+        height: 22px;
+        margin-bottom: 2px;
+        stroke: currentColor;
+    }
+
+    .bottom-nav-item.active {
+        color: #60a5fa;
+    }
+
+    /* CENTER FLOATING BUTTON */
+    .center-btn {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: calc(35px + max(0px, env(safe-area-inset-bottom) / 2));
+
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0f0f1e 100%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        border: 4px solid #1a1a2e;
+        z-index: 1000;
+    }
+
+    .center-btn img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+    }
+
+    /* Small Mobile (320px - 480px) */
+    @media (max-width: 480px) {
+        .container {
+            padding: 0 0.75rem;
+        }
+
+        .form-section {
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        textarea,
+        select {
+            padding: 0.75rem 0.875rem;
+            font-size: 0.9rem;
+        }
+
+        button[type="submit"],
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .button-group {
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .header-title {
+            font-size: 24px;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+        }
+
+        .metric-card {
+            padding: 14px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+        }
+
+        .table-header {
+            padding: 10px;
+        }
+
+        .data-table {
+            min-width: 350px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 10px 6px;
+            font-size: 11px;
+        }
+
+        .brand-text {
+            display: none;
+        }
+
+        .bottom-nav-item span {
+            display: none;
+        }
+
+        .bottom-nav {
+            height: 60px;
+        }
+    }
+}
+
+/* iPad & Tablet Portrait (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .container {
+        padding: 0 1.25rem;
+    }
+
+    .form-section {
+        padding: 2rem;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .button-group {
+        gap: 0.75rem;
+    }
+
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Landscape Orientation Fix */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-content {
+        padding: 12px 0 85px 0;
+    }
+
+    .header {
+        margin-bottom: 12px;
+    }
+
+    .header-title {
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .metrics-grid {
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .metric-card {
+        padding: 12px;
+    }
+}
+
+    </style>
+</head>
+<body>
+<main>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <img th:src="@{/images/CommercialSpace_Logo.png}" alt="D AND J RENTALS" class="brand-logo">
+                <span class="brand-text">D AND J RENTALS</span>
+            </div>
+
+            <div class="navbar-menu">
+                <a th:href="@{/homepage/}" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a th:href="@{/users/}" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Users</span>
+                </a>
+                <a th:href="@{/leases/add}" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <!-- Notebook -->
+                        <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+                        <path d="M15 3v4h4"></path>
+
+                        <!-- Pen -->
+                        <path d="M9 16l5-5 2 2-5 5H9v-2z"></path>
+                        <path d="M13 10l2 2"></path>
+                    </svg>
+                    <span>Leases</span>
+                </a>
+
+                <a th:href="@{/commercial-units}" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+
+                        <!-- Building -->
+                        <rect x="3" y="2" width="14" height="20" rx="2"></rect>
+
+                        <!-- Windows -->
+                        <path d="M7 6h.01"></path>
+                        <path d="M11 6h.01"></path>
+                        <path d="M7 10h.01"></path>
+                        <path d="M11 10h.01"></path>
+                        <path d="M7 14h.01"></path>
+                        <path d="M11 14h.01"></path>
+
+                        <!-- Door -->
+                        <path d="M8 22v-4h4v4"></path>
+
+                        <!-- Plus Sign -->
+                        <path d="M20 8v6"></path>
+                        <path d="M17 11h6"></path>
+                    </svg>
+
+                    <span>Units</span>
+                </a>
+            </div>
+
+            <a th:href="@{/logout}" class="logout-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+<!--        <a th:href="@{/homepage/}" class="bottom-nav-item active">-->
+<!--            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">-->
+<!--                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>-->
+<!--                <polyline points="9 22 9 12 15 12 15 22"></polyline>-->
+<!--            </svg>-->
+<!--            <span>Home</span>-->
+<!--        </a>-->
+
+        <a th:href="@{/commercial-units}" class="bottom-nav-item">
+            <svg width="16" height="16" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+
+                <!-- Building -->
+                <rect x="3" y="2" width="14" height="20" rx="2"></rect>
+
+                <!-- Windows -->
+                <path d="M7 6h.01"></path>
+                <path d="M11 6h.01"></path>
+                <path d="M7 10h.01"></path>
+                <path d="M11 10h.01"></path>
+                <path d="M7 14h.01"></path>
+                <path d="M11 14h.01"></path>
+
+                <!-- Door -->
+                <path d="M8 22v-4h4v4"></path>
+
+                <!-- Plus Sign -->
+                <path d="M20 8v6"></path>
+                <path d="M17 11h6"></path>
+            </svg>
+
+            <span>Units</span>
+        </a>
+
+        <a th:href="@{/users/}"  class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Users</span>
+        </a>
+
+        <!-- CENTER SLOT (EMPTY FOR SPACING) -->
+        <div class="nav-spacer"></div>
+
+        <a th:href="@{/leases/add}" class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Notebook -->
+                <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+                <path d="M15 3v4h4"></path>
+
+                <!-- Pen -->
+                <path d="M9 16l5-5 2 2-5 5H9v-2z"></path>
+                <path d="M13 10l2 2"></path>
+            </svg>
+            <span>Leases</span>
+        </a>
+
+        <a th:href="@{/logout}" class="bottom-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Logout</span>
+        </a>
+
+        <!-- FLOATING BUTTON -->
+        <a th:href="@{/homepage/}" class="center-btn ">
+            <img src="/images/CommercialSpace_Logo.png" alt="logo">
+        </a>
+    </nav>
+
+
+    <div class="container">
+        <div class="form-section">
+            <h1>Registration</h1>
+            <form th:action="@{/users/add}" th:object="${user}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="image">Profile Picture</label>
+                    <input type="file"
+                           id="image"
+                           th:field="*{image}"
+                           accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" th:field="*{firstName}" placeholder="Enter your first name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" placeholder="Enter your last name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="middleName">Middle Name</label>
+                    <input type="text" id="middleName" th:field="*{middleName}" placeholder="Enter your middle name">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="text" id="contactNumber" th:field="*{contactNumber}" placeholder="Enter your contact number">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" th:field="*{address}" placeholder="Enter your address">
+                </div>
+
+                <div class="form-group">
+                    <label for="emailAddress">Email Address</label>
+                    <input type="email" id="emailAddress" th:field="*{emailAddress}" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" th:field="*{password}" placeholder="Enter a strong password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm your password" required>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <span>© 2025 LogBook Application, Inc</span>
+            </div>
+            <ul class="social-links">
+                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+            </ul>
+        </div>
+    </footer>
+</main>
+</body>
+</html>
