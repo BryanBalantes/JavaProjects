@@ -19,11 +19,9 @@ public class SecurityConfiguration {
     // are open to the public (user is not logged in)
     httpSecurity.authorizeHttpRequests(
         authorize -> {
-          // We are allowing users that are not yet logged in to access the homepage
           authorize.requestMatchers("/images/*").permitAll();
-          // Sets the login and register pages to be accessible only for authenticated users
+            // Allows all users, including unauthenticated users, to access the home, login, and registration pages.
             authorize.requestMatchers("/", "/authenticate", "/register").permitAll();
-          //            authorize.requestMatchers("/", "/authenticate", "/register").permitAll();
           // Restricts the user pages and rest endpoints to ADMIN users
           //            authorize.requestMatchers("/users/**",
           // "/api/users/**").hasRole(USER_TYPE.ADMIN.getType());
@@ -41,7 +39,8 @@ public class SecurityConfiguration {
                 // configure that the url that will process the login will be `/authenticate`
                 .loginProcessingUrl("/authenticate")
                 // if the user successfully logs in, redirect to `logbook list page`
-                .defaultSuccessUrl("/homepage/")
+//                .defaultSuccessUrl("/homepage/")
+                    .successHandler(new CustomAuthenticationSuccessHandler())
                     .failureUrl("/?error=true")
                     .permitAll());
 

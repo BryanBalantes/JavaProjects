@@ -20,6 +20,7 @@ public class CommercialUnitController {
 
     @GetMapping
     public String list(Model model) {
+        model.addAttribute("title", "Commercial Unit List");
         List<CommercialUnitDTO> units = service.getAllUnits();
         model.addAttribute("units", units);
         return "commercial-unit/commercial-unit-list";

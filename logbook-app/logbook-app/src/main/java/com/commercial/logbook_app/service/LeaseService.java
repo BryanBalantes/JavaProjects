@@ -195,4 +195,14 @@ public class LeaseService {
                 .map(LeaseDTO::new)
                 .collect(Collectors.toList());
     }
+
+    public LeaseDTO getActiveLeaseByUser(int userId) {
+
+        return repo.findByUser_Id(userId)
+                .stream()
+                .filter(l -> l.getStatus() == LeaseStatus.ACTIVE)
+                .findFirst()
+                .map(LeaseDTO::new)
+                .orElse(null);
+    }
 }

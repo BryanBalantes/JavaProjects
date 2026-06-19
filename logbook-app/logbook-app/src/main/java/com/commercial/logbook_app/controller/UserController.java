@@ -26,22 +26,21 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
   private UserService userService;
   private final TenantPaymentRecordService paymentService;
-  private final LeaseRepository leaseRepository;
   private final LeaseService leaseService;
   private final CommercialUnitService commercialUnitService;
 
   public UserController(UserService userService, TenantPaymentRecordService paymentService,
-                        LeaseRepository leaseRepository, LeaseService leaseService,
+                        LeaseService leaseService,
                         CommercialUnitService commercialUnitService) {
     this.userService = userService;
     this.paymentService = paymentService;
-    this.leaseRepository = leaseRepository;
     this.leaseService = leaseService;
     this.commercialUnitService = commercialUnitService;
   }
 
   @GetMapping("/")
   public String listAll(Model model) {
+    model.addAttribute("title", "Users");
     List<UserDTO> users = userService.getAll();
     model.addAttribute("users", users);
     return "users/list";
@@ -51,9 +50,11 @@ public class UserController {
   public String getViewPage(Model model, @PathVariable int id) {
 
     UserDTO userDTO = userService.getById(id);
+    model.addAttribute("title", "Tenant");
     model.addAttribute("user", userDTO);
 
     if (USER_TYPE.ADMIN.getType().equalsIgnoreCase(userDTO.getType())) {
+      model.addAttribute("title", "MyProfile");
       return "users/user-admin";
     }
 
@@ -109,6 +110,7 @@ public class UserController {
 
   @GetMapping("/add")
   public String getAddPage(Model model) {
+    model.addAttribute("title", "Tenants");
     model.addAttribute("user", new UserDTO());
     return "users/add";
   }

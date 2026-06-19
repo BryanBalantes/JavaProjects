@@ -40,7 +40,7 @@ public class User {
    * files like images.
    * add this in the UserDTO first before it here.
    * */
-  private String profilePicLocation;
+//  private String profilePicLocation;
 
   private String profilePicUrl;
 
@@ -148,13 +148,13 @@ public class User {
     this.password = password;
   }
 
-  public String getProfilePicLocation() {
-    return profilePicLocation;
-  }
-
-  public void setProfilePicLocation(String profilePicLocation) {
-    this.profilePicLocation = profilePicLocation;
-  }
+//  public String getProfilePicLocation() {
+//    return profilePicLocation;
+//  }
+//
+//  public void setProfilePicLocation(String profilePicLocation) {
+//    this.profilePicLocation = profilePicLocation;
+//  }
 
   public String getType() {
     return type;
@@ -179,6 +179,5 @@ public class User {
   public void setCloudinaryProfilePicId(String cloudinaryProfilePicId) {
     this.cloudinaryProfilePicId = cloudinaryProfilePicId;
   }
-
 
 }

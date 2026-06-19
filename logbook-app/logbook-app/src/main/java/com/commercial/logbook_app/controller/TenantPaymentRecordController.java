@@ -49,6 +49,7 @@ public class TenantPaymentRecordController {
 
     @GetMapping("/add")
     public String addPage(Model model) {
+        model.addAttribute("title", "Payments");
         model.addAttribute("record", new TenantPaymentRecordDTO());
         model.addAttribute("users", userService.getAll());
 

@@ -35,22 +35,23 @@ public class UserDTO extends BaseDTO implements ConfirmPasswordInterface {
   @Email(message = "Invalid email format")
   private String emailAddress;
 
-  @NotBlank(message = "Contact Number is required")
-  @Pattern(
-          regexp = "^[0-9]{11}$",
-          message = "Contact number must be exactly 11 digits"
-  )
+//  @NotBlank(message = "Contact Number is required")
+//  @Pattern(
+//          regexp = "^[0-9]{11}$",
+//          message = "Contact number must be exactly 11 digits"
+//  )
   private String contactNumber;
 
-  @NotBlank(message = "Password   is required")
-  @Pattern(
-          regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$",
-          message = "Password must be at least 8 characters and include uppercase, lowercase, and number"
-  )
-  @JsonIgnore
+//  @NotBlank(message = "Password   is required")
+//  @Pattern(
+//          regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$",
+//          message = "Password must be at least 8 characters and include uppercase, lowercase, and number"
+//  )
+//  @JsonIgnore
   private String password;
 
-  @JsonIgnore private String confirmPassword;
+//  @JsonIgnore
+  private String confirmPassword;
 
   /*
    * Add this also private MultipartFile image;

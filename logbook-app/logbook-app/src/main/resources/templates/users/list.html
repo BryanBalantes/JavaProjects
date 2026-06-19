@@ -6,7 +6,8 @@
     <meta name="theme-color" content="#0f0f1e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>LogBook Application</title>
+    <title th:text="${title} + ' | List'"></title>
+    <link rel="icon" type="image/png" th:href="@{/images/CommercialSpace_Logo.png}">
     <style>
         :root {
             --bg-primary: #0f0f1e;

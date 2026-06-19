@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogBook Application</title>
+    <title th:text="${title} + ' | D AND J RENTALS'"></title>
+    <link rel="icon" type="image/png" th:href="@{/images/CommercialSpace_Logo.png}">
     <style>
         * {
             margin: 0;
@@ -911,7 +912,7 @@
     <div class="container">
         <div class="form-section">
             <h1>Registration</h1>
-            <form th:action="@{/users/add}" th:object="${user}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/register}" th:object="${user}" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="image">Profile Picture</label>
                     <input type="file"

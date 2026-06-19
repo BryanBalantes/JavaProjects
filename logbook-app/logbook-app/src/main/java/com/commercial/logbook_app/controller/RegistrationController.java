@@ -19,12 +19,15 @@ public class RegistrationController {
 
   @GetMapping
   public String getRegistrationPage(Model model) {
+    model.addAttribute("title", "SignUp");
     model.addAttribute("user", new UserDTO());
     return "registration/index";
   }
 
   @PostMapping
   public String register(@ModelAttribute("user") UserDTO user) {
+
+    System.out.println("REGISTER CONTROLLER CALLED");
     user.setType(USER_TYPE.GENERAL.getType());
     userService.create(user);
     return "redirect:/";

@@ -15,17 +15,17 @@ import java.util.Locale;
 
 @Controller
 @RequestMapping("/homepage")
-public class DashboardController {
+public class AdminDashboardController {
 
     private final UserService userService;
     private final LeaseService leaseService;
     private final TenantPaymentRecordService paymentService;
     private final CommercialUnitService commercialUnitService;
 
-    public DashboardController(UserService userService,
-                               LeaseService leaseService,
-                               TenantPaymentRecordService paymentService,
-                               CommercialUnitService commercialUnitService) {
+    public AdminDashboardController(UserService userService,
+                                    LeaseService leaseService,
+                                    TenantPaymentRecordService paymentService,
+                                    CommercialUnitService commercialUnitService) {
 
         this.userService = userService;
         this.leaseService = leaseService;
@@ -35,6 +35,8 @@ public class DashboardController {
 
     @GetMapping("/")
     public String dashboard(Model model) {
+
+        model.addAttribute("title", "Dashboard");
 
         // USERS
         model.addAttribute("users", userService.getActiveUsers());
